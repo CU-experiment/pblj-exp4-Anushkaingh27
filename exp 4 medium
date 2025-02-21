@@ -1,0 +1,48 @@
+Create a program to collect and store all the cards to assist the users in finding all the cards in a given symbol using Collection interface.
+
+import java.util.*;
+
+class Card {
+    String symbol, name;
+    
+    public Card(String symbol, String name) {
+        this.symbol = symbol;
+        this.name = name;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public String toString() {
+        return name + " of " + symbol;
+    }
+}
+
+public class CardCollection {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Card> cards = new ArrayList<>();
+
+        cards.add(new Card("Hearts", "Ace"));
+        cards.add(new Card("Spades", "King"));
+        cards.add(new Card("Diamonds", "Queen"));
+        cards.add(new Card("Clubs", "Jack"));
+        cards.add(new Card("Hearts", "10"));
+        cards.add(new Card("Spades", "9"));
+        cards.add(new Card("Diamonds", "8"));
+        cards.add(new Card("Clubs", "7"));
+
+        System.out.print("Enter a symbol to search: ");
+        String searchSymbol = scanner.nextLine();
+
+        System.out.println("Cards found:");
+        for (Card card : cards) {
+            if (card.getSymbol().equalsIgnoreCase(searchSymbol)) {
+                System.out.println(card);
+            }
+        }
+        scanner.close();
+    }
+}
+
