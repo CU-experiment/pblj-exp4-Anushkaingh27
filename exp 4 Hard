@@ -1,0 +1,49 @@
+Develop a ticket booking system with synchronized threads to ensure no double booking of seats. Use thread priorities to simulate VIP bookings being processed first.
+class TicketBookingSystem {
+    private int availableSeats = 5;
+
+    public synchronized boolean bookTicket(String customer) {
+        if (availableSeats > 0) {
+            System.out.println(customer + " booked a seat. Remaining seats: " + (--availableSeats));
+            return true;
+        } else {
+            System.out.println(customer + " tried booking but seats are full.");
+            return false;
+        }
+    }
+}
+
+class Customer extends Thread {
+    private TicketBookingSystem bookingSystem;
+    private String customerName;
+
+    public Customer(TicketBookingSystem bookingSystem, String customerName, int priority) {
+        this.bookingSystem = bookingSystem;
+        this.customerName = customerName;
+        setPriority(priority);
+    }
+
+    public void run() {
+        bookingSystem.bookTicket(customerName);
+    }
+}
+
+public class TicketBooking {
+    public static void main(String[] args) {
+        TicketBookingSystem system = new TicketBookingSystem();
+
+        Customer vip1 = new Customer(system, "VIP_1", Thread.MAX_PRIORITY);
+        Customer vip2 = new Customer(system, "VIP_2", Thread.MAX_PRIORITY);
+        Customer normal1 = new Customer(system, "User_1", Thread.NORM_PRIORITY);
+        Customer normal2 = new Customer(system, "User_2", Thread.NORM_PRIORITY);
+        Customer normal3 = new Customer(system, "User_3", Thread.NORM_PRIORITY);
+        Customer normal4 = new Customer(system, "User_4", Thread.MIN_PRIORITY);
+
+        vip1.start();
+        vip2.start();
+        normal1.start();
+        normal2.start();
+        normal3.start();
+        normal4.start();
+    }
+}
